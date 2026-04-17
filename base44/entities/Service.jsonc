@@ -1,0 +1,40 @@
+{
+  "name": "Service",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Service name"
+    },
+    "duration_minutes": {
+      "type": "number",
+      "description": "Duration in minutes"
+    },
+    "price": {
+      "type": "number",
+      "description": "Price in ILS"
+    },
+    "description": {
+      "type": "string",
+      "description": "Service description"
+    },
+    "gender": {
+      "type": "string",
+      "enum": [
+        "male",
+        "female"
+      ],
+      "default": "male",
+      "description": "Target gender for this service"
+    },
+    "background_image_url": {
+      "type": "string",
+      "description": "Background image URL for the service card"
+    }
+  },
+  "required": [
+    "name",
+    "duration_minutes",
+    "price"
+  ]
+}

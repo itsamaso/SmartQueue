@@ -1,2 +1,1 @@
-# SmartQueue
-Appointments Booking System For Barbershops/Salons
+# Base44 App
