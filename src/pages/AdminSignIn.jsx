@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { createPageUrl } from "@/utils";
+import { createPageUrl, toUserFacingErrorMessage } from "@/utils";
 import { base44 } from "@/api/base44Client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -133,8 +133,7 @@ export default function AdminSignIn() {
       setTimeout(() => navigate(createPageUrl("AdminDashboard")), 500);
 
     } catch (err) {
-      const msg = err?.response?.data?.error;
-      setError(msg || "אירעה שגיאה בהתחברות. אנא נסה שוב.");
+      setError(toUserFacingErrorMessage(err, "אירעה שגיאה בהתחברות. אנא נסה שוב."));
     } finally {
       setIsLoading(false);
     }

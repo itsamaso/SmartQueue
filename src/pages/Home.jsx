@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useMemo, useCallback, lazy, Suspense } from "react";
 import { useNavigate } from "react-router-dom";
-import { createPageUrl } from "@/utils";
+import { createPageUrl, toUserFacingErrorMessage } from "@/utils";
 import { base44 } from "@/api/base44Client";
 import { useMutation, useQueryClient, useQuery } from "@tanstack/react-query";
 import Navbar from "../components/Navbar";
@@ -209,7 +209,7 @@ function HomeContent() {
       navigate(createPageUrl("Success"));
     },
     onError: (error) => {
-      setError(error.message || 'ההזמנה נכשלה. אנא נסה שוב.');
+      setError(toUserFacingErrorMessage(error, 'ההזמנה נכשלה. אנא נסה שוב.'));
     }
   });
 

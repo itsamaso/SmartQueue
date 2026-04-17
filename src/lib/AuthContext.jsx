@@ -21,6 +21,16 @@ export const AuthProvider = ({ children }) => {
     try {
       setIsLoadingPublicSettings(true);
       setAuthError(null);
+
+      if (!appParams.appId || !appParams.serverUrl) {
+        setAuthError({
+          type: 'misconfigured',
+          message: 'Missing Base44 configuration (app id or server URL).'
+        });
+        setIsLoadingPublicSettings(false);
+        setIsLoadingAuth(false);
+        return;
+      }
       
       // First, check app public settings (with token if available)
       // This will tell us if auth is required, user not registered, etc.

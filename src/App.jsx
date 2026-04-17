@@ -10,6 +10,7 @@ import { setupIframeMessaging } from './lib/iframe-messaging';
 import PageNotFound from './lib/PageNotFound';
 import { AuthProvider, useAuth } from '@/lib/AuthContext';
 import UserNotRegisteredError from '@/components/UserNotRegisteredError';
+import Base44ConfigMissing from '@/components/Base44ConfigMissing';
 import ResetPassword from './pages/ResetPassword';
 
 const { Pages, Layout, mainPage } = pagesConfig;
@@ -36,6 +37,9 @@ const AuthenticatedApp = () => {
 
   // Handle authentication errors
   if (authError) {
+    if (authError.type === 'misconfigured') {
+      return <Base44ConfigMissing />;
+    }
     if (authError.type === 'user_not_registered') {
       return <UserNotRegisteredError />;
     } else if (authError.type === 'auth_required') {
@@ -43,6 +47,18 @@ const AuthenticatedApp = () => {
       navigateToLogin();
       return null;
     }
+    return (
+      <div className="fixed inset-0 flex flex-col items-center justify-center gap-3 bg-slate-50 p-6 text-center">
+        <p className="max-w-md text-sm text-slate-700">{String(authError.message || 'Something went wrong loading the app.')}</p>
+        <button
+          type="button"
+          className="rounded-lg bg-slate-900 px-4 py-2 text-sm text-white"
+          onClick={() => window.location.reload()}
+        >
+          Retry
+        </button>
+      </div>
+    );
   }
 
   // Render the main app

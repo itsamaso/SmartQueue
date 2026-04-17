@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { base44 } from "@/api/base44Client";
+import { toUserFacingErrorMessage } from "@/utils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -42,7 +43,7 @@ export default function ResetPassword() {
     if (res.data?.success) {
       setStatus("success");
     } else {
-      setErrorMsg(res.data?.error || "אירעה שגיאה, נסה שוב");
+      setErrorMsg(toUserFacingErrorMessage(res.data?.error, "אירעה שגיאה, נסה שוב"));
       setStatus("error");
     }
     setLoading(false);

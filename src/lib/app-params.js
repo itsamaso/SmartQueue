@@ -23,7 +23,7 @@ const getAppParamValue = (paramName, { defaultValue = undefined, removeFromUrl =
 		storage.setItem(storageKey, searchParam);
 		return searchParam;
 	}
-	if (defaultValue) {
+	if (defaultValue != null && String(defaultValue).trim() !== "") {
 		storage.setItem(storageKey, defaultValue);
 		return defaultValue;
 	}
@@ -35,9 +35,12 @@ const getAppParamValue = (paramName, { defaultValue = undefined, removeFromUrl =
 }
 
 const getAppParams = () => {
+	// Docs: VITE_BASE44_APP_BASE_URL; older exports used VITE_BASE44_BACKEND_URL
+	const defaultServerUrl =
+		import.meta.env.VITE_BASE44_APP_BASE_URL || import.meta.env.VITE_BASE44_BACKEND_URL;
 	return {
 		appId: getAppParamValue("app_id", { defaultValue: import.meta.env.VITE_BASE44_APP_ID }),
-		serverUrl: getAppParamValue("server_url", { defaultValue: import.meta.env.VITE_BASE44_BACKEND_URL }),
+		serverUrl: getAppParamValue("server_url", { defaultValue: defaultServerUrl }),
 		token: getAppParamValue("access_token", { removeFromUrl: true }),
 		fromUrl: getAppParamValue("from_url", { defaultValue: window.location.href }),
 		functionsVersion: getAppParamValue("functions_version"),

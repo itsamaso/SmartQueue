@@ -203,8 +203,8 @@ export default function AuthChoice() {
           <Sparkles
             key={i}
             className={`floating-sparkle absolute w-4 h-4`}
-            style={{ color: 'rgba(215,199,161,0.25)' }}
             style={{
+              color: 'rgba(215,199,161,0.25)',
               left: `${10 + (i * 12)}%`,
               top: `${15 + (i % 3) * 25}%`
             }}
