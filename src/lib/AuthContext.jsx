@@ -1,6 +1,7 @@
 import React, { createContext, useState, useContext, useEffect } from 'react';
 import { base44 } from '@/api/base44Client';
 import { appParams } from '@/lib/app-params';
+import { getBase44ClientExtraHeaders } from '@/lib/base44-headers';
 import { createAxiosClient } from '@base44/sdk/dist/utils/axios-client';
 
 const AuthContext = createContext();
@@ -22,10 +23,10 @@ export const AuthProvider = ({ children }) => {
       setIsLoadingPublicSettings(true);
       setAuthError(null);
 
-      if (!appParams.appId || !appParams.serverUrl) {
+      if (!appParams.appId) {
         setAuthError({
           type: 'misconfigured',
-          message: 'Missing Base44 configuration (app id or server URL).'
+          message: 'Missing Base44 configuration (app id).'
         });
         setIsLoadingPublicSettings(false);
         setIsLoadingAuth(false);
@@ -37,7 +38,8 @@ export const AuthProvider = ({ children }) => {
       const appClient = createAxiosClient({
         baseURL: `${appParams.serverUrl}/api/apps/public`,
         headers: {
-          'X-App-Id': appParams.appId
+          'X-App-Id': appParams.appId,
+          ...getBase44ClientExtraHeaders()
         },
         token: appParams.token, // Include token if available
         interceptResponses: true

@@ -3,8 +3,12 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
   "scripts": {
-    "dev": "vite",
+    "dev": "node scripts/check-local-env.mjs && vite",
+    "dev:skip-env": "vite",
     "build": "vite build",
     "lint": "eslint .",
     "typecheck": "tsc -p ./jsconfig.json",

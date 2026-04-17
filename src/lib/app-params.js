@@ -34,13 +34,22 @@ const getAppParamValue = (paramName, { defaultValue = undefined, removeFromUrl =
 	return null;
 }
 
+/** When no URL is in env/query/storage, use this app host (SmartQueue on Base44). Override with VITE_BASE44_APP_BASE_URL. */
+const DEFAULT_BASE44_SERVER_URL = "https://smartqueue.base44.app";
+
 const getAppParams = () => {
 	// Docs: VITE_BASE44_APP_BASE_URL; older exports used VITE_BASE44_BACKEND_URL
 	const defaultServerUrl =
 		import.meta.env.VITE_BASE44_APP_BASE_URL || import.meta.env.VITE_BASE44_BACKEND_URL;
+	const rawServerUrl = getAppParamValue("server_url", { defaultValue: defaultServerUrl });
+	const serverUrl =
+		rawServerUrl != null && String(rawServerUrl).trim() !== ""
+			? String(rawServerUrl).trim().replace(/\/+$/, "")
+			: DEFAULT_BASE44_SERVER_URL;
+
 	return {
 		appId: getAppParamValue("app_id", { defaultValue: import.meta.env.VITE_BASE44_APP_ID }),
-		serverUrl: getAppParamValue("server_url", { defaultValue: defaultServerUrl }),
+		serverUrl,
 		token: getAppParamValue("access_token", { removeFromUrl: true }),
 		fromUrl: getAppParamValue("from_url", { defaultValue: window.location.href }),
 		functionsVersion: getAppParamValue("functions_version"),
